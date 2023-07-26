@@ -1,6 +1,6 @@
 import config from '@/config';
 import AppError from '@/ts/classes/AppError';
-import { IUser } from '@/ts/IUser';
+import { IUser } from '@/ts/interfaces/IUser';
 import { logger } from '@/utils/Logger';
 import { Request, Response, NextFunction } from 'express';
 import jwt, { JwtPayload, VerifyErrors } from 'jsonwebtoken';
