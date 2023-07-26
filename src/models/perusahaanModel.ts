@@ -31,15 +31,54 @@ export async function getPerusahaanById(id: string) {
     });
 }
 
+export async function getPerusahaanByCode(code: string) {
+    return prisma.perusahaan.findFirst({
+        where: {
+            code,
+        },
+    });
+}
+
+export async function getPerusahaanByCodeExcludeId(code: string, id: string) {
+    return prisma.perusahaan.findFirst({
+        where: {
+            code,
+            NOT: { id },
+        },
+    });
+}
+
+export async function getPerusahaanByQuery(query: string = '') {
+    if (query.trim() !== '')
+        return prisma.perusahaan.findMany({
+            where: {
+                OR: [
+                    { name: { contains: query, mode: 'insensitive' } },
+                    { code: { contains: query, mode: 'insensitive' } },
+                ],
+            },
+        });
+
+    return getAllPerusahaan();
+}
+
 export async function updatePerusahaan(
     id: string,
-    dataToUpdate: Prisma.perusahaanUpdateInput
+    name: string,
+    address: string,
+    phone: string,
+    code: string
 ) {
     return prisma.perusahaan.update({
         where: {
             id,
         },
-        data: dataToUpdate,
+        data: {
+            name,
+            address,
+            phone,
+            code,
+        },
     });
 }
 

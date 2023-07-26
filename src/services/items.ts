@@ -104,7 +104,7 @@ export async function udpateExistingItem({
     } catch (err) {
         if (err instanceof AppError) throw err;
         logger.error(err);
-        throw new AppError('Failed create', 500);
+        throw new AppError('Failed udpate', 500);
     }
 }
 
@@ -121,7 +121,7 @@ export async function deleteExistingItem(id: string): Promise<IItem> {
     } catch (err) {
         if (err instanceof AppError) throw err;
         logger.error(err);
-        throw new AppError('Failed create', 500);
+        throw new AppError('Failed delete', 500);
     }
 }
 

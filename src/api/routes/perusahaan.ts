@@ -1,15 +1,17 @@
 import { IUserDTO } from '@/ts/interfaces/IUser';
 import { signIn } from '@/services/auth';
 import { Request, Response, Application, NextFunction } from 'express';
-import { validateBody, validateItemBody } from '../middleware/validate';
+import {
+    validateBody,
+    validateItemBody,
+    validatePerusahaanBody,
+} from '../middleware/validate';
 import { z } from 'zod';
 import authenticateToken from '../middleware/authenticateToken';
 import AppError from '@/ts/classes/AppError';
 import StandardRes from '@/ts/interfaces/StandarRes';
 import { logger } from '@/utils/Logger';
 import {
-    ItemArrayToDTO,
-    ItemToDTO,
     createNewItem,
     deleteExistingItem,
     queryItemById,
@@ -17,23 +19,33 @@ import {
     udpateExistingItem,
 } from '@/services/items';
 import { IItem, IItemDTO } from '@/ts/interfaces/IItem';
+import {
+    PerusahaanArrayToDTO,
+    PerusahaanToDTO,
+    createNewPerusahaan,
+    deleteExistingPerusahaan,
+    queryPerusahaan,
+    queryPerusahaanById,
+    udpateExistingPerusahaan,
+} from '@/services/perusahaan';
+import { IPerusahaan, IPerusahaanDTO } from '@/ts/interfaces/IPerusahaan';
 
 export default function (app: Application): void {
     app.get(
-        '/barang',
+        '/perusahaan',
         authenticateToken,
         async (
-            req: Request<{}, {}, {}, { q?: string; perusahaan?: string }>,
+            req: Request<{}, {}, {}, { q?: string }>,
             res: Response,
             next: NextFunction
         ) => {
             try {
-                const { q, perusahaan } = req.query;
-                const items = await queryItems(q, perusahaan);
+                const { q } = req.query;
+                const perusahaan = await queryPerusahaan(q);
                 return res.json({
                     status: 'success',
-                    message: 'successfully queried items',
-                    data: ItemArrayToDTO(items),
+                    message: 'successfully queried perusahaan',
+                    data: PerusahaanArrayToDTO(perusahaan),
                 } as StandardRes);
             } catch (err) {
                 next(err);
@@ -42,7 +54,7 @@ export default function (app: Application): void {
     );
 
     app.get(
-        '/barang/:id',
+        '/perusahaan/:id',
         authenticateToken,
         async (
             req: Request<{ id: string }>,
@@ -51,12 +63,12 @@ export default function (app: Application): void {
         ) => {
             try {
                 const id = req.params.id;
-                const item = await queryItemById(id);
+                const perusahaan = await queryPerusahaanById(id);
 
                 return res.json({
                     status: 'success',
-                    message: 'successfully queried items',
-                    data: ItemToDTO(item),
+                    message: 'successfully queried perusahaan',
+                    data: PerusahaanToDTO(perusahaan),
                 } as StandardRes);
             } catch (err) {
                 next(err);
@@ -65,31 +77,29 @@ export default function (app: Application): void {
     );
 
     app.post(
-        '/barang',
+        '/perusahaan',
         authenticateToken,
-        validateItemBody,
+        validatePerusahaanBody,
         async (req: Request, res: Response, next: NextFunction) => {
             try {
                 const {
                     nama: name,
-                    perusahaan_id,
-                    harga: price,
-                    stok: stock,
+                    alamat: address,
+                    no_telp: phone,
                     kode: code,
-                } = req.body as IItemDTO;
+                } = req.body as IPerusahaanDTO;
 
-                const item: IItem = await createNewItem({
+                const perusahaan: IPerusahaan = await createNewPerusahaan({
                     name,
-                    perusahaan_id,
-                    price,
-                    stock,
+                    address,
+                    phone,
                     code,
                 });
 
                 return res.json({
                     status: 'success',
-                    message: 'successfully created item',
-                    data: ItemToDTO(item),
+                    message: 'successfully created perusahaan',
+                    data: PerusahaanToDTO(perusahaan),
                 } as StandardRes);
             } catch (err) {
                 next(err);
@@ -98,9 +108,9 @@ export default function (app: Application): void {
     );
 
     app.put(
-        '/barang/:id',
+        '/perusahaan/:id',
         authenticateToken,
-        validateItemBody,
+        validatePerusahaanBody,
         async (
             req: Request<{ id: string }>,
             res: Response,
@@ -109,25 +119,23 @@ export default function (app: Application): void {
             try {
                 const {
                     nama: name,
-                    perusahaan_id,
-                    harga: price,
-                    stok: stock,
+                    alamat: address,
+                    no_telp: phone,
                     kode: code,
-                } = req.body as IItemDTO;
+                } = req.body as IPerusahaanDTO;
 
-                const item: IItem = await udpateExistingItem({
+                const perusahaan: IPerusahaan = await udpateExistingPerusahaan({
                     id: req.params.id,
                     name,
-                    perusahaan_id,
-                    price,
-                    stock,
+                    address,
+                    phone,
                     code,
                 });
 
                 return res.json({
                     status: 'success',
-                    message: 'successfully udpated item',
-                    data: ItemToDTO(item),
+                    message: 'successfully udpated perusahaan',
+                    data: PerusahaanToDTO(perusahaan),
                 } as StandardRes);
             } catch (err) {
                 next(err);
@@ -136,7 +144,7 @@ export default function (app: Application): void {
     );
 
     app.delete(
-        '/barang/:id',
+        '/perusahaan/:id',
         authenticateToken,
         async (
             req: Request<{ id: string }>,
@@ -144,12 +152,14 @@ export default function (app: Application): void {
             next: NextFunction
         ) => {
             try {
-                const item: IItem = await deleteExistingItem(req.params.id);
+                const perusahaan: IPerusahaan = await deleteExistingPerusahaan(
+                    req.params.id
+                );
 
                 return res.json({
                     status: 'success',
-                    message: 'successfully deleted item',
-                    data: ItemToDTO(item),
+                    message: 'successfully deleted perusahaan',
+                    data: PerusahaanToDTO(perusahaan),
                 } as StandardRes);
             } catch (err) {
                 next(err);
