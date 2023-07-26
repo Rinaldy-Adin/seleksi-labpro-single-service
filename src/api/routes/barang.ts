@@ -8,6 +8,8 @@ import AppError from '@/ts/classes/AppError';
 import StandardRes from '@/ts/interfaces/StandarRes';
 import { logger } from '@/utils/Logger';
 import {
+    ItemArrayToDTO,
+    ItemToDTO,
     createNewItem,
     deleteExistingItem,
     queryItemById,
@@ -31,7 +33,7 @@ export default function (app: Application): void {
                 return res.json({
                     status: 'success',
                     message: 'successfully queried items',
-                    data: items,
+                    data: ItemArrayToDTO(items),
                 } as StandardRes);
             } catch (err) {
                 next(err);
@@ -54,7 +56,7 @@ export default function (app: Application): void {
                 return res.json({
                     status: 'success',
                     message: 'successfully queried items',
-                    data: item,
+                    data: ItemToDTO(item),
                 } as StandardRes);
             } catch (err) {
                 next(err);
@@ -88,7 +90,7 @@ export default function (app: Application): void {
                 return res.json({
                     status: 'success',
                     message: 'successfully created item',
-                    data: item,
+                    data: ItemToDTO(item),
                 } as StandardRes);
             } catch (err) {
                 next(err);
@@ -126,7 +128,7 @@ export default function (app: Application): void {
                 return res.json({
                     status: 'success',
                     message: 'successfully udpated item',
-                    data: item,
+                    data: ItemToDTO(item),
                 } as StandardRes);
             } catch (err) {
                 next(err);
@@ -148,7 +150,7 @@ export default function (app: Application): void {
                 return res.json({
                     status: 'success',
                     message: 'successfully deleted item',
-                    data: item,
+                    data: ItemToDTO(item),
                 } as StandardRes);
             } catch (err) {
                 next(err);

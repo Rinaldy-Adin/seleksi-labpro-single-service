@@ -9,7 +9,7 @@ import {
 } from '@/models/itemModel';
 import { getPerusahaanById } from '@/models/perusahaanModel';
 import AppError from '@/ts/classes/AppError';
-import { IItem, IItemWithId } from '@/ts/interfaces/IItem';
+import { IItem, IItemDTO, IItemWithId } from '@/ts/interfaces/IItem';
 import { logger } from '@/utils/Logger';
 import { v4 as uuid } from 'uuid';
 
@@ -123,4 +123,19 @@ export async function deleteExistingItem(id: string): Promise<IItem> {
         logger.error(err);
         throw new AppError('Failed create', 500);
     }
+}
+
+export function ItemToDTO(item: IItem): IItemDTO {
+    return {
+        id: item.id,
+        nama: item.name,
+        harga: item.price,
+        kode: item.code,
+        perusahaan_id: item.perusahaan_id,
+        stok: item.stock,
+    };
+}
+
+export function ItemArrayToDTO(arr: IItem[]): IItemDTO[] {
+    return arr.map((item) => ItemToDTO(item));
 }
