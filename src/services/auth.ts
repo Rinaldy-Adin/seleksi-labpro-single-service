@@ -1,4 +1,4 @@
-import { IUser } from '@/ts/IUser';
+import { IUser } from '@/ts/interfaces/IUser';
 import { logger } from '@/utils/Logger';
 import { getUserByUsername } from '@/models/userModel';
 import jwt from 'jsonwebtoken';
