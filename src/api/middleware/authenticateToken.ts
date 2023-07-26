@@ -11,7 +11,7 @@ export default function authenticateToken(
     next: NextFunction
 ) {
     const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
+    const token = authHeader;
 
     if (token == null) {
         const err = new AppError('Unauthorized request', 401);
