@@ -3,6 +3,7 @@ import { logger } from '@/utils/Logger';
 import { getUserByUsername } from '@/models/userModel';
 import jwt from 'jsonwebtoken';
 import config from '@/config';
+import AppError from '@/ts/classes/AppError';
 
 function generateToken(user: IUser): string {
     logger.info(`Signing JWT for user: ${user.name}`);
@@ -23,7 +24,7 @@ export async function signIn(
     logger.info('Checking user');
     const userRecord = await getUserByUsername(username);
     if (!userRecord) {
-        throw new Error('User not registered');
+        throw new AppError('User not registered', 401);
     }
 
     if (password === userRecord.password) {
@@ -32,6 +33,6 @@ export async function signIn(
 
         return { user: userRecord, token };
     } else {
-        throw new Error('Invalid Password');
+        throw new AppError('Invalid Password', 401);
     }
 }
