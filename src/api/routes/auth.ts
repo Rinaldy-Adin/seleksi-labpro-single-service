@@ -1,7 +1,7 @@
 import { IUserDTO } from '@/ts/interfaces/IUser';
 import { signIn } from '@/services/auth';
 import { Request, Response, Application, NextFunction } from 'express';
-import validateBody from '../middleware/validateBody';
+import { validateBody } from '../middleware/validate';
 import { z } from 'zod';
 import authenticateToken from '../middleware/authenticateToken';
 import AppError from '@/ts/classes/AppError';

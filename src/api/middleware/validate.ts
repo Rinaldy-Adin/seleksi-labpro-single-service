@@ -2,7 +2,7 @@ import { AnyZodObject, ZodError } from 'zod';
 import { Request, Response, NextFunction } from 'express';
 import AppError from '@/ts/classes/AppError';
 
-export default function validateBody(schema: AnyZodObject) {
+export function validateBody(schema: AnyZodObject) {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
             await schema.parseAsync({

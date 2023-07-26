@@ -1,4 +1,5 @@
 import prisma from '@/prisma';
+import { logger } from '@/utils/Logger';
 import { Prisma } from '@prisma/client';
 import { v4 as uuid } from 'uuid';
 
@@ -36,6 +37,51 @@ export async function getItemById(id: string) {
             id,
         },
     });
+}
+
+export async function getItemsByQuery(
+    query: string = '',
+    perusahaan: string = ''
+) {
+    if (query.trim() !== '' && perusahaan.trim() !== '')
+        return prisma.items.findMany({
+            where: {
+                AND: [
+                    {
+                        perusahaan: {
+                            name: { contains: perusahaan, mode: 'insensitive' },
+                        },
+                    },
+                    {
+                        OR: [
+                            { name: { contains: query, mode: 'insensitive' } },
+                            { code: { contains: query, mode: 'insensitive' } },
+                        ],
+                    },
+                ],
+            },
+        });
+
+    if (query.trim() !== '')
+        return prisma.items.findMany({
+            where: {
+                OR: [
+                    { name: { contains: query, mode: 'insensitive' } },
+                    { code: { contains: query, mode: 'insensitive' } },
+                ],
+            },
+        });
+
+    if (perusahaan.trim() !== '')
+        return prisma.items.findMany({
+            where: {
+                perusahaan: {
+                    name: { contains: perusahaan, mode: 'insensitive' },
+                },
+            },
+        });
+
+    return getAllItems();
 }
 
 export async function updateItem(
