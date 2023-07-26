@@ -8,22 +8,22 @@ datasource db {
 }
 
 model items {
-  id            String      @id @db.Char(36)
-  perusahaan_id String?     @db.Char(36)
-  name          String?     @db.VarChar(50)
-  price         Int?
-  stock         Int?
-  code          String?     @db.Char(5)
-  perusahaan    perusahaan? @relation(fields: [perusahaan_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id            String     @id @db.Char(36)
+  perusahaan_id String     @db.Char(36)
+  name          String     @db.VarChar(50)
+  price         Int
+  stock         Int
+  code          String     @db.Char(5)
+  perusahaan    perusahaan @relation(fields: [perusahaan_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model perusahaan {
-  id     String  @id @db.Char(36)
-  name   String? @db.VarChar(50)
-  adress String? @db.VarChar(100)
-  phone  String? @db.VarChar(20)
-  code   String? @db.Char(5)
-  items  items[]
+  id      String  @id @db.Char(36)
+  name    String  @db.VarChar(50)
+  address String  @db.VarChar(100)
+  phone   String  @db.VarChar(20)
+  code    String  @db.Char(5)
+  items   items[]
 }
 
 model users {
