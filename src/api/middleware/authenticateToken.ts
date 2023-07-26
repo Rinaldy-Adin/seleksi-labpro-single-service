@@ -27,6 +27,6 @@ export default function authenticateToken(
         const userPayload = decoded as IUser;
         req.user = { username: userPayload.username, name: userPayload.name };
 
-        next();
+        return next();
     });
 }

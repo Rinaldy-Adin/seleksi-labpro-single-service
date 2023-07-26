@@ -39,6 +39,25 @@ export async function getItemById(id: string) {
     });
 }
 
+export async function getItemByCode(code: string) {
+    return prisma.items.findFirst({
+        where: {
+            code,
+        },
+    });
+}
+
+export async function getItemByCodeExcludeId(code: string, id: string) {
+    return prisma.items.findFirst({
+        where: {
+            code,
+            NOT: {
+                id,
+            },
+        },
+    });
+}
+
 export async function getItemsByQuery(
     query: string = '',
     perusahaan: string = ''
@@ -86,13 +105,28 @@ export async function getItemsByQuery(
 
 export async function updateItem(
     id: string,
-    dataToUpdate: Prisma.itemsUpdateInput
+    perusahaan_id: string,
+    name: string,
+    price: number,
+    stock: number,
+    code: string
 ) {
     return prisma.items.update({
         where: {
             id,
         },
-        data: dataToUpdate,
+        data: {
+            id,
+            name,
+            price,
+            stock,
+            code,
+            perusahaan: {
+                connect: {
+                    id: perusahaan_id,
+                },
+            },
+        },
     });
 }
 

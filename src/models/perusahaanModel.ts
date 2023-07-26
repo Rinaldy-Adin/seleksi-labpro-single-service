@@ -4,7 +4,7 @@ import { v4 as uuid } from 'uuid';
 
 export async function createPerusahaan(
     name: string,
-    adress: string,
+    address: string,
     phone: string,
     code: string
 ) {
@@ -12,7 +12,7 @@ export async function createPerusahaan(
         data: {
             id: uuid(),
             name,
-            adress,
+            address,
             phone,
             code,
         },
