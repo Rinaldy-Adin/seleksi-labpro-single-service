@@ -35,7 +35,7 @@
    `npx prisma generate`
 
 5. Jalankan seeder untuk mengisi database dengan data inisial
-   `node src/seeder.ts`
+   `node seeder.ts`
 
 ## Design Pattern yang digunakan
 
