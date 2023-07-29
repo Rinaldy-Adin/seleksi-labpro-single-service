@@ -12,7 +12,7 @@ if (envFound.error) {
 
 const config = {
     jwtSecret: process.env.JWT_SECRET || 'SECRET',
-    port: process.env.PORT || 8080,
+    port: 8080,
     logs: {
         level: process.env.LOG_LEVEL || 'debug',
     },

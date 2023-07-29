@@ -21,7 +21,7 @@
 
 4. Copy `.example.env` menjadi `.env` dan set environment variabel yang sesuai
 
-### Database Migration & Seeding (PostgreSQL)
+### Database Migration & Seeding (Local)
 
 1. Buat database baru pada postgres untuk program ini
 
@@ -36,6 +36,11 @@
 
 5. Jalankan seeder untuk mengisi database dengan data inisial
    `node seeder.ts`
+
+### Run program
+
+1. Jalankan `npm start`
+   `npm start`
 
 ## Design Pattern yang digunakan
 
