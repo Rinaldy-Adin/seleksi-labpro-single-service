@@ -12,8 +12,7 @@ function generateToken(user: IUser): string {
             username: user.username,
             name: user.name,
         },
-        config.jwtSecret,
-        { expiresIn: config.jwtExpire }
+        config.jwtSecret
     );
 }
 
