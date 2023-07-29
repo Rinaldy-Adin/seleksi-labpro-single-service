@@ -12,7 +12,6 @@ if (envFound.error) {
 
 const config = {
     jwtSecret: process.env.JWT_SECRET || 'SECRET',
-    jwtExpire: process.env.JWT_EXP || '1800s',
     port: process.env.PORT || 8080,
     logs: {
         level: process.env.LOG_LEVEL || 'debug',
