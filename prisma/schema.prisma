@@ -1,34 +1,34 @@
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
 }
 
 model items {
-  id            String     @id @db.Char(36)
-  perusahaan_id String     @db.Char(36)
-  name          String     @db.VarChar(50)
-  price         Int
-  stock         Int
-  code          String     @db.Char(5)
-  perusahaan    perusahaan @relation(fields: [perusahaan_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+    id            String     @id @db.Char(36)
+    perusahaan_id String     @db.Char(36)
+    name          String     @db.VarChar(50)
+    price         Int
+    stock         Int
+    code          String     @db.Char(5)
+    perusahaan    perusahaan @relation(fields: [perusahaan_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model perusahaan {
-  id      String  @id @db.Char(36)
-  name    String  @db.VarChar(50)
-  address String  @db.VarChar(100)
-  phone   String  @db.VarChar(20)
-  code    String  @db.Char(5)
-  items   items[]
+    id      String  @id @db.Char(36)
+    name    String  @db.VarChar(50)
+    address String  @db.VarChar(100)
+    phone   String  @db.VarChar(20)
+    code    String  @db.Char(5)
+    items   items[]
 }
 
 model users {
-  username String @id @db.VarChar(30)
-  password String @db.VarChar(30)
-  email    String @db.VarChar(50)
-  name     String @db.VarChar(50)
+    username String @id @db.VarChar(30)
+    password String @db.VarChar(30)
+    email    String @db.VarChar(50)
+    name     String @db.VarChar(50)
 }

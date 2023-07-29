@@ -8,6 +8,35 @@
 
 ## Cara menjalankan
 
+### Setup
+
+1. Clone repository
+   `git clone https://github.com/Rinaldy-Adin/seleksi-labpro-single-service.git`
+
+2. Masuk ke dalam folder program
+   `cd seleksi-labpro-single-service`
+
+3. Install dependencies yang diperlukan
+   `npm i`
+
+4. Copy `.example.env` menjadi `.env` dan set environment variabel yang sesuai
+
+### Database Migration & Seeding (PostgreSQL)
+
+1. Buat database baru pada postgres untuk program ini
+
+2. Set variabel `DATABASE_URL` pada `.env` dengan [connection url database postgres](https://www.prisma.io/docs/concepts/database-connectors/postgresql)
+   `postgresql://USER:PASSWORD@HOST:PORT/DATABASE`
+
+3. Inisialisasi/migrate schema yang ada pada `prisma/schema.prisma` ke database yang telah dibuat
+   `npx prisma db push`
+
+4. Jalankan prisma generate untuk menghasilkan prisma client
+   `npx prisma generate`
+
+5. Jalankan seeder untuk mengisi database dengan data inisial
+   `node src/seeder.ts`
+
 ## Design Pattern yang digunakan
 
 ### 1. Chain of Responsibility
